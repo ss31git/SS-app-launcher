@@ -25,11 +25,9 @@ jobs:
         run: dotnet publish --configuration Release -o publish
         working-directory: api-dotnet
 
-      # To enable deployment, add AZURE_DOTNET_FUNCTION_APP_NAME and
-      # AZURE_DOTNET_PUBLISH_PROFILE to GitHub Secrets, then uncomment below.
-      # - name: Deploy to Azure Functions
-      #   uses: Azure/functions-action@v1
-      #   with:
-      #     app-name: ${{ secrets.AZURE_DOTNET_FUNCTION_APP_NAME }}
-      #     package: api-dotnet/publish
-      #     publish-profile: ${{ secrets.AZURE_DOTNET_PUBLISH_PROFILE }}
+      - name: Deploy to Azure Functions
+        uses: Azure/functions-action@v1
+        with:
+          app-name: ss-dotnet-api
+          package: api-dotnet/publish
+          publish-profile: ${{ secrets.AZURE_DOTNET_PUBLISH_PROFILE }}
