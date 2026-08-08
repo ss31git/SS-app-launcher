@@ -8,3 +8,4 @@ venv/
 bin/
 obj/
 publish/
+local.settings.json

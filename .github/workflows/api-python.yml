@@ -8,29 +8,26 @@ on:
     paths: ['api-python/**']
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-          cache: 'pip'
-          cache-dependency-path: api-python/requirements.txt
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt --target=".python_packages/lib/site-packages"
         working-directory: api-python
 
-      - name: Lint
-        run: pip install ruff && ruff check .
-        working-directory: api-python
-
-      # Uncomment and configure once Azure App Service is set up:
-      # - name: Deploy to Azure App Service
-      #   uses: azure/webapps-deploy@v3
+      # To enable deployment, add AZURE_PYTHON_FUNCTION_APP_NAME and
+      # AZURE_PYTHON_PUBLISH_PROFILE to GitHub Secrets, then uncomment below.
+      # - name: Deploy to Azure Functions
+      #   uses: Azure/functions-action@v1
       #   with:
-      #     app-name: ss-python-api
-      #     publish-profile: ${{ secrets.AZURE_PYTHON_PUBLISH_PROFILE }}
+      #     app-name: ${{ secrets.AZURE_PYTHON_FUNCTION_APP_NAME }}
       #     package: api-python
+      #     publish-profile: ${{ secrets.AZURE_PYTHON_PUBLISH_PROFILE }}
+      #     scm-do-build-during-deployment: true
+      #     enable-oryx-build: true

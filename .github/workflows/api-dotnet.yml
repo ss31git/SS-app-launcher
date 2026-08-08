@@ -8,7 +8,7 @@ on:
     paths: ['api-dotnet/**']
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,18 +21,15 @@ jobs:
         run: dotnet restore
         working-directory: api-dotnet
 
-      - name: Build
-        run: dotnet build --no-restore --configuration Release
+      - name: Build & Publish
+        run: dotnet publish --configuration Release -o publish
         working-directory: api-dotnet
 
-      - name: Publish
-        run: dotnet publish --no-build --configuration Release -o publish
-        working-directory: api-dotnet
-
-      # Uncomment and configure once Azure App Service is set up:
-      # - name: Deploy to Azure App Service
-      #   uses: azure/webapps-deploy@v3
+      # To enable deployment, add AZURE_DOTNET_FUNCTION_APP_NAME and
+      # AZURE_DOTNET_PUBLISH_PROFILE to GitHub Secrets, then uncomment below.
+      # - name: Deploy to Azure Functions
+      #   uses: Azure/functions-action@v1
       #   with:
-      #     app-name: ss-dotnet-api
-      #     publish-profile: ${{ secrets.AZURE_DOTNET_PUBLISH_PROFILE }}
+      #     app-name: ${{ secrets.AZURE_DOTNET_FUNCTION_APP_NAME }}
       #     package: api-dotnet/publish
+      #     publish-profile: ${{ secrets.AZURE_DOTNET_PUBLISH_PROFILE }}
