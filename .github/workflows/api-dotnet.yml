@@ -1,0 +1,38 @@
+name: .NET API CI/CD
+
+on:
+  push:
+    paths: ['api-dotnet/**']
+    branches: [main]
+  pull_request:
+    paths: ['api-dotnet/**']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore
+        run: dotnet restore
+        working-directory: api-dotnet
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+        working-directory: api-dotnet
+
+      - name: Publish
+        run: dotnet publish --no-build --configuration Release -o publish
+        working-directory: api-dotnet
+
+      # Uncomment and configure once Azure App Service is set up:
+      # - name: Deploy to Azure App Service
+      #   uses: azure/webapps-deploy@v3
+      #   with:
+      #     app-name: ss-dotnet-api
+      #     publish-profile: ${{ secrets.AZURE_DOTNET_PUBLISH_PROFILE }}
+      #     package: api-dotnet/publish
