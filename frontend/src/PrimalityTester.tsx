@@ -22,7 +22,8 @@ export default function PrimalityTester({ onBack }: { onBack: () => void }) {
     setError(null)
     setLoading(true)
     try {
-      const res = await fetch(`/api/dotnet/primality/${encodeURIComponent(value)}`)
+      const apiBase = import.meta.env.VITE_API_DOTNET_BASE ?? '/api/dotnet'
+      const res = await fetch(`${apiBase}/primality/${encodeURIComponent(value)}`)
       const data = await res.json()
       if (!res.ok) {
         setError((data as ApiError).error ?? 'Something went wrong.')
