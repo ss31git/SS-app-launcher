@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api/python': { target: 'http://localhost:8000', rewrite: (p) => p.replace(/^\/api\/python/, '') },
-      '/api/dotnet': { target: 'http://localhost:5000', rewrite: (p) => p.replace(/^\/api\/dotnet/, '') },
+      '/api/dotnet': { target: 'http://localhost:7071', rewrite: (p) => p.replace(/^\/api\/dotnet/, '/api') },
     }
   }
 })
